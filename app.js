@@ -10,6 +10,9 @@ var pgSession = require('connect-pg-simple')(session)
 var passport = require('passport')
 var InstagramStrategy = require('passport-instagram').Strategy;
 
+//db
+var db = require('./server/queries/queries');
+
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
@@ -30,6 +33,8 @@ passport.use(new InstagramStrategy({
   function (accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
+      db.createUser(profile,accessToken);
+
       return done(null, profile);
     });
   }
@@ -39,7 +44,7 @@ passport.use(new InstagramStrategy({
 var app = express();
 
 var env = process.env.NODE_ENV || 'development';
-var databaseURL = process.env.DATABASE_URL || 'postgres://admin:test@192.168.99.100:5432/admin';
+var databaseURL = process.env.DATABASE_URL || 'postgres://admin:test@192.168.99.100:5432/instabot';
 var cookieSecret = process.env.COOKIE_SECRET || 'development'
 
 app.locals.ENV = env;
@@ -69,9 +74,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-var instagram = require('./routes/instagram')(app, express);
-var routes = require('./routes/index');
-var users = require('./routes/user');
+var instagram = require('./server/routes/instagram')(app, express);
+var routes = require('./server/routes/index');
+var users = require('./server/routes/user');
 
 app.use('/', routes);
 app.use('/users', users);
