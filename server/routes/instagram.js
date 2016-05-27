@@ -10,17 +10,12 @@ module.exports = function (app, express) {
     res.render('account', {user: req.user});
   });
 
-  router.get('/', function (req, res) {
-    res.render('index', {user: req.user});
-  });
-
-
   app.use('/instagram', router);
 
   function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/login')
+    res.redirect('/')
   }
 };

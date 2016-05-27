@@ -1,3 +1,5 @@
+"use strict"
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -31,11 +33,18 @@ passport.use(new InstagramStrategy({
     callbackURL: "http://localhost:3000/auth/instagram/callback"
   },
   function (accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
     process.nextTick(function () {
-      db.createUser(profile,accessToken);
-
-      return done(null, profile);
+      let id = profile.id;
+      console.log('userid ' + id);
+      db.getUserById(id).then(function (user) {
+        if (user !== undefined) {
+          return done(null, user);
+        } else {
+          db.createUser(profile, accessToken).then(function (user) {
+            return done(null, user)
+          });
+        }
+      });
     });
   }
 ));
@@ -89,7 +98,7 @@ app.get('/auth/instagram',
   });
 
 app.get('/auth/instagram/callback',
-  passport.authenticate('instagram', {failureRedirect: '/login'}),
+  passport.authenticate('instagram', {failureRedirect: '/'}),
   function (req, res) {
     res.redirect('/instagram');
   });

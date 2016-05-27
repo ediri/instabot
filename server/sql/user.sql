@@ -1,6 +1,6 @@
 CREATE TABLE "user"(
-   ID INT PRIMARY KEY     NOT NULL,
-   USERNAME           varchar    NOT NULL,
+   ID INT PRIMARY KEY NOT NULL,
+   USERNAME varchar NOT NULL,
    FULL_NAME varchar,
    PROFILE_PICTURE varchar,
    BIO varchar,

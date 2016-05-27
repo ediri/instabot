@@ -11,21 +11,33 @@ var db = pgp(connectionString);
 
 function createUser(userJson, access_token) {
   userJson._json.data.access_token = access_token;
-  console.log(userJson._json.data)
-  db.none('insert into "user" (id, username, full_name, profile_picture, bio, website, access_token ' +
-    ') values (${id}, ${username}, ${full_name}, ${profile_picture}, ${bio}, ${website}, ${access_token})',
+  return db.one('insert into "user" (id, username, full_name, profile_picture, bio, website, access_token ' +
+    ') values (${id}, ${username}, ${full_name}, ${profile_picture}, ${bio}, ${website}, ${access_token}) returning *',
     userJson._json.data)
-    .then(function () {
+    .then(function (data) {
       console.log("Added User")
+      return data;
     })
-    .catch(function (err) {
-      console.log(err)
+    .catch(function (error) {
+      console.log(error)
+    });
+}
+
+function getUserById(id) {
+  return db.one('select * from "user" where id=$1', id)
+    .then(function (data) {
+      console.log(data);
+      return data;
+    })
+    .catch(function (error) {
+      console.log(error)
     });
 }
 
 
 module.exports = {
-  createUser: createUser
+  createUser: createUser,
+  getUserById: getUserById
   //getAllPuppies: getAllPuppies,
   //getSinglePuppy: getSinglePuppy,
   //createPuppy: createPuppy,
