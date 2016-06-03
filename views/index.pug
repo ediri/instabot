@@ -1,11 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1= InstagramBot
+  row
   if user
+   .card.col-sm-4.card-info
+    img.card.img-top(src=user.profile_picture)
+    .card-block
+     h2.card-title=user.username
+     p.card-text.white-space-pre.blockquote=user.bio
+
    p= user.username
   else
-   a(href="/auth/instagram") Login with Instagram
+   .col-sm-8
+    a(href="/auth/instagram") Login with Instagram
 
 
