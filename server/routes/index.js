@@ -1,10 +1,27 @@
 var express = require('express');
+var rp = require('request-promise');
 var router = express.Router();
 
 /* GET home page. */
 
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+
+function getUserDetailsFromInstagram(req, cb) {
+  rp({
+    uri: 'https://api.instagram.com/v1/users/self/',
+    qs: {access_token: req.user.access_token},
+    json: true
+  }).then(function (user) {
+    console.log(user);
+  });
+}
+
+
+router.get('/', function (req, res) {
+  console.log();
+  getUserDetailsFromInstagram(req, function () {
+
+  });
+  res.render('index', {title: 'Express', user: req.user});
 });
 
 module.exports = router;
