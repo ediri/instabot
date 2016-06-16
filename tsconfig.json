@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "system",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "noEmit": true,
+    "rootDir": "public"
+  },
+  "exclude": [
+    "node_modules",
+    "jspm_packages"
+  ],
+  "filesGlob": [
+    "./public/**/*.ts",
+    "./jspm_packages/**/*.ts",
+    "!./node_modules/**/*.ts"
+  ]
+}

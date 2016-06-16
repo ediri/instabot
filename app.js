@@ -79,7 +79,9 @@ app.use(session({
 }));
 
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/src', express.static(path.join(__dirname, 'src')));
+app.use('/config.js', express.static(__dirname + '/config.js'));
+app.use('/jspm_packages', express.static(path.join(__dirname, 'jspm_packages')));
 app.use(passport.initialize());
 app.use(passport.session());
 

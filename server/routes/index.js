@@ -18,9 +18,11 @@ function getUserDetailsFromInstagram(req, cb) {
 
 router.get('/', function (req, res) {
   console.log();
-  getUserDetailsFromInstagram(req, function () {
+  if (req.user) {
+    getUserDetailsFromInstagram(req, function () {
 
-  });
+    });
+  }
   res.render('index', {title: 'Express', user: req.user});
 });
 
