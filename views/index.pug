@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  h1= InstagramBot
-  row
+  my-app
+  h1 InstagramBot
+  .row
   if user
    .card.col-sm-4.card-info
     img.card.img-top(src=user.profile_picture)
